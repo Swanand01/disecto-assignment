@@ -33,9 +33,13 @@ def test_view(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def get_order(request):
+def get_order(request, order_id):
     user = request.user
-    order = Order.objects.get(user=user)
+    order = Order.objects.get(id=order_id)
+
+    if not order.user == user:
+        return Response({"msg": "Unauthorised"})
+
     ctx = {
         "user": user.username,
         "products": []
@@ -50,10 +54,14 @@ def get_order(request):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def update_order(request):
+def update_order(request, order_id):
     if request.body:
         user = request.user
-        order = Order.objects.get(user=user)
+        order = Order.objects.get(id=order_id)
+
+        if not order.user == user:
+            return Response({"msg": "Unauthorised"})
+
         updated_products = json.loads(request.body)["products"]
         for product in updated_products:
             p = Product.objects.get(name=product["name"])
@@ -75,11 +83,33 @@ def update_order(request):
         return Response({"msg": "Order updated successfully"})
 
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def create_new_order(request):
+    if request.body:
+        user = request.user
+        order = Order(user=user)
+        order.save()
+
+        products = json.loads(request.body)["products"]
+        for product in products:
+            p = Product.objects.get(name=product["name"])
+            cp = OrderProduct(product=p, quantity=product["quantity"])
+            cp.save()
+            order.products.add(cp)
+
+        return Response({"msg": "Order created successfully."})
+
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def place_order(request):
+def place_order(request, order_id):
     user = request.user
-    order = Order.objects.get(user=user)
+    order = Order.objects.get(id=order_id)
+
+    if not order.user == user:
+        return Response({"msg": "Unauthorised"})
+
     if list(order.products.all()):
         order.is_placed = True
         order.save()
