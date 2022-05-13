@@ -12,15 +12,14 @@ class Product(models.Model):
 
 
 class OrderProduct(models.Model):
-	product = models.ForeignKey(Product, on_delete=models.CASCADE)
-	quantity = models.PositiveIntegerField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
 
 
 class Order(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="order", unique=True)
-    products = models.ManyToManyField(
-        OrderProduct, blank=True, related_name="order_products")
+    products = models.ManyToManyField(OrderProduct, blank=True)
 
     def __str__(self):
         return self.user.username + "'s order"
