@@ -73,3 +73,14 @@ def update_order(request):
                 cp.save()
                 order.products.add(cp)
         return Response({"msg": "Order updated successfully"})
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def place_order(request):
+    user = request.user
+    order = Order.objects.get(user=user)
+    if list(order.products.all()):
+        order.is_placed = True
+        order.save()
+        return Response({"msg": "Order placed successfully"})
