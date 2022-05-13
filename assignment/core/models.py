@@ -11,16 +11,16 @@ class Product(models.Model):
         return self.name
 
 
-class CartProduct(models.Model):
+class OrderProduct(models.Model):
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	quantity = models.PositiveIntegerField()
 
 
-class Cart(models.Model):
+class Order(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="cart", unique=True)
+        User, on_delete=models.CASCADE, related_name="order", unique=True)
     products = models.ManyToManyField(
-        CartProduct, blank=True, related_name="cart_products")
+        OrderProduct, blank=True, related_name="order_products")
 
     def __str__(self):
-        return self.user.username + "'s cart"
+        return self.user.username + "'s order"

@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Cart, CartProduct, Product
+from .models import Order, OrderProduct, Product
 
 
 @api_view()
@@ -33,14 +33,14 @@ def test_view(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def get_cart(request):
+def get_order(request):
     user = request.user
-    cart = Cart.objects.get(user=user)
+    order = Order.objects.get(user=user)
     ctx = {
         "user": user.username,
         "products": []
     }
-    for p in cart.products.all():
+    for p in order.products.all():
         ctx["products"].append({
             "name": p.product.name,
             "quantity": p.quantity
@@ -50,25 +50,26 @@ def get_cart(request):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def update_cart(request):
+def update_order(request):
     if request.body:
         user = request.user
-        cart = Cart.objects.get(user=user)
+        order = Order.objects.get(user=user)
         updated_products = json.loads(request.body)["products"]
         for product in updated_products:
             p = Product.objects.get(name=product["name"])
-            if cart.products.filter(product__name=product["name"]).exists():
-                cp = cart.products.get(product__name=product["name"])
-                cart.products.remove(cp)
+            if order.products.filter(product__name=product["name"]).exists():
+                # Implement get_or_create()
+                cp = order.products.get(product__name=product["name"])
+                order.products.remove(cp)
                 cp.delete()
 
                 if product["quantity"] > 0:
-                    newcp = CartProduct(
+                    newcp = OrderProduct(
                         product=p, quantity=product["quantity"])
                     newcp.save()
-                    cart.products.add(newcp)
+                    order.products.add(newcp)
             else:
-                cp = CartProduct(product=p, quantity=product["quantity"])
+                cp = OrderProduct(product=p, quantity=product["quantity"])
                 cp.save()
-                cart.products.add(cp)
-        return Response({"msg": "Cart updated successfully"})
+                order.products.add(cp)
+        return Response({"msg": "Order updated successfully"})
