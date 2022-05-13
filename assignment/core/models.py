@@ -21,9 +21,9 @@ class OrderProduct(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="order", unique=True)
+        User, on_delete=models.CASCADE, related_name="order")
     products = models.ManyToManyField(OrderProduct, blank=True)
     is_placed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username + "'s order"
+        return self.user.username + "'s order " + str(self.id)
