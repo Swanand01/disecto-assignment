@@ -146,6 +146,10 @@ REST_FRAMEWORK = {
     ),
 }
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'core.serializers.CustomRegisterSerializer',
+}
+
 # Enables django-rest-auth to use JWT tokens instead of regular tokens.
 REST_USE_JWT = True
 
