@@ -5,7 +5,8 @@ from .views import(
     place_order,
     test_view,
     get_order,
-    update_order
+    update_order,
+    generate_invoice
 )
 
 urlpatterns = [
@@ -15,5 +16,7 @@ urlpatterns = [
     path('create-new-order/', name='create-new-order', view=create_new_order),
     path('get-order/<str:order_id>', name='get-order', view=get_order),
     path('update-order/<str:order_id>', name='update-order', view=update_order),
-    path('place-order/<str:order_id>', name='place-order', view=place_order)
+    path('place-order/<str:order_id>', name='place-order', view=place_order),
+    path('generate-invoice/<str:order_id>',
+         name='generate-invoice', view=generate_invoice)
 ]

@@ -1,4 +1,5 @@
 import json
+from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,7 +7,7 @@ from rest_framework.response import Response
 from .models import Order, OrderProduct, Product
 
 
-@api_view()
+@api_view(["GET"])
 def get_all_products(request):
     products = Product.objects.all()
     ctx = {
@@ -35,7 +36,10 @@ def test_view(request):
 @permission_classes([IsAuthenticated])
 def get_order(request, order_id):
     user = request.user
-    order = Order.objects.get(id=order_id)
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return Response({"msg": "Order does not exist."})
 
     if not order.user == user:
         return Response({"msg": "Unauthorised"})
@@ -57,7 +61,11 @@ def get_order(request, order_id):
 def update_order(request, order_id):
     if request.body:
         user = request.user
-        order = Order.objects.get(id=order_id)
+
+        try:
+            order = Order.objects.get(id=order_id)
+        except Order.DoesNotExist:
+            return Response({"msg": "Order does not exist."})
 
         if not order.user == user:
             return Response({"msg": "Unauthorised"})
@@ -105,7 +113,10 @@ def create_new_order(request):
 @permission_classes([IsAuthenticated])
 def place_order(request, order_id):
     user = request.user
-    order = Order.objects.get(id=order_id)
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return Response({"msg": "Order does not exist."})
 
     if not order.user == user:
         return Response({"msg": "Unauthorised"})
@@ -114,3 +125,28 @@ def place_order(request, order_id):
         order.is_placed = True
         order.save()
         return Response({"msg": "Order placed successfully"})
+
+
+def generate_invoice(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return Response({"msg": "Order does not exist."})
+
+    ctx = {
+        "name": order.user.username,
+        "order_id": order.id,
+        "products": []
+    }
+    total = 0
+    for product in order.products.all():
+        ctx["products"].append({
+            "name": product.product.name,
+            "price_per_unit": product.product.price,
+            "quantity": product.quantity,
+            "total": product.product.price * product.quantity
+        })
+        total += product.product.price * product.quantity
+
+    ctx["total"] = total
+    return render(request, "invoice_template.html", ctx)
