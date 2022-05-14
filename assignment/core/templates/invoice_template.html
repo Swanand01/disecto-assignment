@@ -56,11 +56,19 @@
 					<td class='price-column' style='text-align:center'>{{total}}</td>
 				</tr>
 			</table>
+			<button id="download-pdf">Download PDF</button>
 			<div class="bill-footer">
 				<p><i>Thank you for shopping with us.</i></p>
 			</div>
 		</div>
+
 	</main>
 </body>
+
+<script type="text/javascript">
+	document.querySelector("#download-pdf").addEventListener("click", () => {
+		window.print()
+	})
+</script>
 
 </html>

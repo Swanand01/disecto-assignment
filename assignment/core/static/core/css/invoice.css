@@ -19,7 +19,7 @@ main {
 	font-size: 13px;
 }
 
-.order-id{
+.order-id {
 	text-align: right;
 }
 
@@ -40,6 +40,10 @@ main {
 }
 
 .main-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	margin-top: 50px;
 }
 
@@ -81,6 +85,13 @@ main {
 	text-align: center;
 }
 
+#download-pdf {
+	margin-top: 20px;
+	padding: 10px;
+	color: ghostwhite;
+	background-color: darkgreen;
+	cursor: pointer;
+}
 
 .bill-footer {
 	font-size: 14px;
@@ -92,4 +103,10 @@ main {
 #item-column {
 	text-align: left;
 	width: 50%;
+}
+
+@media print {
+	#download-pdf {
+		display: none;
+	}
 }
