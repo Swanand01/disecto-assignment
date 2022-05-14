@@ -1,0 +1,95 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+	padding: 60px 30px;
+}
+
+.header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.header .customer-info {
+	font-size: 13px;
+}
+
+.order-id{
+	text-align: right;
+}
+
+.company-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.company-info h2 {
+	font-size: 30px;
+}
+
+.company-info .contact-info {
+	text-align: end;
+	align-self: flex-end;
+	font-size: 13px;
+	margin-top: 20px;
+}
+
+.main-content {
+	margin-top: 50px;
+}
+
+.bill-table {
+	width: 100%;
+	border-collapse: collapse;
+	min-height: 300px;
+}
+
+.bill-table tr th {
+	border: 1px solid black;
+	font-size: 14px;
+	padding: 5px;
+}
+
+.bill-table .item-rows {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+
+.bill-table .buffer-row {
+	height: 100%;
+}
+
+.bill-table .final-row {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.bill-table tr td {
+	font-size: 13px;
+	padding: 5px;
+}
+
+.pricePerUnit-column,
+.qty-column,
+.price-column {
+	border-left: 1px solid black;
+	text-align: center;
+}
+
+
+.bill-footer {
+	font-size: 14px;
+	margin-top: 50px;
+	text-align: center;
+	text-decoration: underline;
+}
+
+#item-column {
+	text-align: left;
+	width: 50%;
+}

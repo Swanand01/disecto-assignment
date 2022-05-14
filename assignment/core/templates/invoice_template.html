@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>INVOICE# {{order_id}}</title>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'core/css/invoice.css' %}">
+</head>
+
+<body>
+	<main>
+		<div class="header">
+			<div class="customer-info">
+				<h3>Customer name: {{name}}</h3>
+			</div>
+			<div class="company-info">
+				<h5 class="order-id">INVOICE#: {{order_id}}</h5>
+				<h2>Virtual company Ltd.</h2>
+				<div class="contact-info">
+					<p>+919999955555</p>
+					<p>abc@company.com</p>
+					<p>1st Street</p>
+				</div>
+			</div>
+		</div>
+		<div class="main-content">
+			<table class="bill-table">
+				<tr>
+					<th id="item-column">Item/description</th>
+					<th>Price per unit</th>
+					<th>Quantity</th>
+					<th>Price</th>
+				</tr>
+				{% for product in products %}
+				<tr class="item-rows">
+					<td>{{product.name}}</td>
+					<td class='pricePerUnit-column'>{{product.price_per_unit}}</td>
+					<td class='qty-column'>{{product.quantity}}</td>
+					<td class='price-column'>{{product.total}}</td>
+				</tr>
+				{% endfor %}
+				<tr class="item-rows buffer-row">
+					<td></td>
+					<td class='price-column'></td>
+					<td class='price-column'></td>
+					<td class='price-column'></td>
+				</tr>
+
+				<tr class="item-rows final-row">
+					<td>TOTAL</td>
+					<td class='price-column'></td>
+					<td class='price-column'></td>
+					<td class='price-column' style='text-align:center'>{{total}}</td>
+				</tr>
+			</table>
+			<div class="bill-footer">
+				<p><i>Thank you for shopping with us.</i></p>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>
