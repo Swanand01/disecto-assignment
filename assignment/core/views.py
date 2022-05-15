@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.http import JsonResponse
 
 from .models import Order, OrderProduct, Product
 
@@ -151,7 +152,7 @@ def generate_invoice(request, order_id):
     try:
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
-        return Response({"msg": "Order does not exist."})
+        return JsonResponse({"msg": "Order does not exist."})
 
     ctx = {
         "name": order.user.username,
