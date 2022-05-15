@@ -10,6 +10,9 @@ from .models import Order, OrderProduct, Product
 
 @api_view(["GET"])
 def get_all_products(request):
+    """
+    Return JSON Response containing all products.
+    """
     products = Product.objects.all()
     ctx = {
         "products": []
@@ -36,6 +39,10 @@ def test_view(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_order(request, order_id):
+    """
+    Gets Order from order_id.
+    Returns JSON Response containing name, quantity of all OrderProducts in that order.
+    """
     user = request.user
     try:
         order = Order.objects.get(id=order_id)
@@ -60,6 +67,10 @@ def get_order(request, order_id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_order(request, order_id):
+    """
+    Update an Order.
+    Gets the Order from order_id, and updates its OrderProducts with the ones sent in the request.
+    """
     if not request.body:
         return Response({"msg": "Request body cannot be empty."})
 
@@ -85,9 +96,9 @@ def update_order(request, order_id):
     for product in updated_products:
         p = Product.objects.get(name=product["name"])
         if order.products.filter(product__name=product["name"]).exists():
-            cp = order.products.get(product__name=product["name"])
-            order.products.remove(cp)
-            cp.delete()
+            op = order.products.get(product__name=product["name"])
+            order.products.remove(op)
+            op.delete()
 
             if product["quantity"] > 0:
                 newcp = OrderProduct(
@@ -95,15 +106,18 @@ def update_order(request, order_id):
                 newcp.save()
                 order.products.add(newcp)
         else:
-            cp = OrderProduct(product=p, quantity=product["quantity"])
-            cp.save()
-            order.products.add(cp)
+            op = OrderProduct(product=p, quantity=product["quantity"])
+            op.save()
+            order.products.add(op)
     return Response({"msg": "Order updated successfully"})
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def create_new_order(request):
+    """
+    Creates a new Order with the OrderProducts sent in the request.
+    """
     if not request.body:
         return Response({"msg": "Request body cannot be empty."})
 
@@ -123,9 +137,9 @@ def create_new_order(request):
 
     for product in products:
         p = Product.objects.get(name=product["name"])
-        cp = OrderProduct(product=p, quantity=product["quantity"])
-        cp.save()
-        order.products.add(cp)
+        op = OrderProduct(product=p, quantity=product["quantity"])
+        op.save()
+        order.products.add(op)
 
     return Response({"msg": "Order created successfully."})
 
@@ -133,6 +147,9 @@ def create_new_order(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def place_order(request, order_id):
+    """
+    Changes Order status to placed.
+    """
     user = request.user
     try:
         order = Order.objects.get(id=order_id)
@@ -149,6 +166,9 @@ def place_order(request, order_id):
 
 
 def generate_invoice(request, order_id):
+    """
+    View to generate invoice for an Order.
+    """
     try:
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
