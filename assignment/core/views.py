@@ -59,54 +59,74 @@ def get_order(request, order_id):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def update_order(request, order_id):
-    if request.body:
-        user = request.user
+    if not request.body:
+        return Response({"msg": "Request body cannot be empty."})
 
-        try:
-            order = Order.objects.get(id=order_id)
-        except Order.DoesNotExist:
-            return Response({"msg": "Order does not exist."})
+    user = request.user
 
-        if not order.user == user:
-            return Response({"msg": "Unauthorised"})
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return Response({"msg": "Order does not exist."})
 
-        updated_products = json.loads(request.body)["products"]
-        for product in updated_products:
-            p = Product.objects.get(name=product["name"])
-            if order.products.filter(product__name=product["name"]).exists():
-                # Implement get_or_create()
-                cp = order.products.get(product__name=product["name"])
-                order.products.remove(cp)
-                cp.delete()
+    if not order.user == user:
+        return Response({"msg": "Unauthorised"})
 
-                if product["quantity"] > 0:
-                    newcp = OrderProduct(
-                        product=p, quantity=product["quantity"])
-                    newcp.save()
-                    order.products.add(newcp)
-            else:
-                cp = OrderProduct(product=p, quantity=product["quantity"])
-                cp.save()
-                order.products.add(cp)
-        return Response({"msg": "Order updated successfully"})
+    data = json.loads(request.body)
+
+    if not "products" in data.keys():
+        return Response({"msg": "products list not found."})
+
+    updated_products = data["products"]
+    if len(updated_products) == 0:
+        return Response({"msg": "products list cannot be empty"})
+    
+    for product in updated_products:
+        p = Product.objects.get(name=product["name"])
+        if order.products.filter(product__name=product["name"]).exists():
+            cp = order.products.get(product__name=product["name"])
+            order.products.remove(cp)
+            cp.delete()
+
+            if product["quantity"] > 0:
+                newcp = OrderProduct(
+                    product=p, quantity=product["quantity"])
+                newcp.save()
+                order.products.add(newcp)
+        else:
+            cp = OrderProduct(product=p, quantity=product["quantity"])
+            cp.save()
+            order.products.add(cp)
+    return Response({"msg": "Order updated successfully"})
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def create_new_order(request):
-    if request.body:
-        user = request.user
-        order = Order(user=user)
-        order.save()
+    if not request.body:
+        return Response({"msg": "Request body cannot be empty."})
 
-        products = json.loads(request.body)["products"]
-        for product in products:
-            p = Product.objects.get(name=product["name"])
-            cp = OrderProduct(product=p, quantity=product["quantity"])
-            cp.save()
-            order.products.add(cp)
+    data = json.loads(request.body)
 
-        return Response({"msg": "Order created successfully."})
+    if not "products" in data.keys():
+        return Response({"msg": "products list not found."})
+
+    products = data["products"]
+
+    if len(products) == 0:
+        return Response({"msg": "products list cannot be empty"})
+
+    user = request.user
+    order = Order(user=user)
+    order.save()
+
+    for product in products:
+        p = Product.objects.get(name=product["name"])
+        cp = OrderProduct(product=p, quantity=product["quantity"])
+        cp.save()
+        order.products.add(cp)
+
+    return Response({"msg": "Order created successfully."})
 
 
 @api_view(["GET"])
