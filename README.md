@@ -118,7 +118,7 @@ Changes Order status to placed.
   GET /generate-invoice/{order_id}
 ```
 
-To generate an invoice, visit the above path.
+To generate an invoice, visit the above path in a browser.
 ## Live
 
 The web application is deployed [here](https://disecto-backend-assignment.herokuapp.com/). 
