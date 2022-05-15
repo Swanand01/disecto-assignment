@@ -57,7 +57,7 @@ def get_order(request, order_id):
     return Response(ctx)
 
 
-@api_view(["POST"])
+@api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_order(request, order_id):
     if not request.body:
@@ -81,7 +81,7 @@ def update_order(request, order_id):
     updated_products = data["products"]
     if len(updated_products) == 0:
         return Response({"msg": "products list cannot be empty"})
-    
+
     for product in updated_products:
         p = Product.objects.get(name=product["name"])
         if order.products.filter(product__name=product["name"]).exists():
