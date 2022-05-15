@@ -1,0 +1,234 @@
+{
+	"info": {
+		"_postman_id": "6e714695-7c47-4227-8083-913ff4d8db48",
+		"name": "Disecto Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://disecto-backend-assignment.herokuapp.com/get-all-products/",
+					"protocol": "https",
+					"host": [
+						"disecto-backend-assignment",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"get-all-products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"testuser1\",\r\n    \"email\": \"testuser1@email.com\",\r\n    \"password1\": \"swanand2001\",\r\n    \"password2\": \"swanand2001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://disecto-backend-assignment.herokuapp.com/auth/registration/",
+					"protocol": "https",
+					"host": [
+						"disecto-backend-assignment",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth",
+						"registration",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"testuser1\",\r\n    \"password\": \"swanand2001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://disecto-backend-assignment.herokuapp.com/auth/login/",
+					"protocol": "https",
+					"host": [
+						"disecto-backend-assignment",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyNjgxNDYzLCJpYXQiOjE2NTI1OTUwNjMsImp0aSI6IjA2NGUyMzAzMmIxODRiMzc4MDJmMDBlNjgxZjQyY2JhIiwidXNlcl9pZCI6OX0.aSEX9PgHnYJ67lPXc6gsEM-lVa0M9xj7TaYgTa08vwQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://disecto-backend-assignment.herokuapp.com/get-order/5",
+					"protocol": "https",
+					"host": [
+						"disecto-backend-assignment",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"get-order",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyNzA4MzI4LCJpYXQiOjE2NTI2MjE5MjgsImp0aSI6IjRlYTJjZTE1NTZiZTRhY2U5YmQzYjMzNmY5MzkwZDAwIiwidXNlcl9pZCI6Mn0.brW43MNWbbpZFsLk5dQAgMSov3LEll_r2tHm7QD3-W8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"name\": \"IPhone XR\",\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"name\": \"IPhone 11\",\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://disecto-backend-assignment.herokuapp.com/create-new-order/",
+					"protocol": "https",
+					"host": [
+						"disecto-backend-assignment",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"create-new-order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyNjgxNjc5LCJpYXQiOjE2NTI1OTUyNzksImp0aSI6ImQwMWE4ZGUzY2JjODQyNzFiODA3NzY0NzU0ZTE2MzJiIiwidXNlcl9pZCI6OX0.s21HKRW7QitgnGB9tqpA5UF7scneFf-jspTTo-BLwR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"name\": \"IPhone XR\",\r\n            \"quantity\": 12\r\n        },\r\n        {\r\n            \"name\": \"IPhone 11\",\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://disecto-backend-assignment.herokuapp.com/update-order/5",
+					"protocol": "https",
+					"host": [
+						"disecto-backend-assignment",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"update-order",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Place Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyNjgxNjc5LCJpYXQiOjE2NTI1OTUyNzksImp0aSI6ImQwMWE4ZGUzY2JjODQyNzFiODA3NzY0NzU0ZTE2MzJiIiwidXNlcl9pZCI6OX0.s21HKRW7QitgnGB9tqpA5UF7scneFf-jspTTo-BLwR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://disecto-backend-assignment.herokuapp.com/place-order/7",
+					"protocol": "https",
+					"host": [
+						"disecto-backend-assignment",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"place-order",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
