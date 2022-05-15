@@ -128,3 +128,8 @@ The web application is deployed [here](https://disecto-backend-assignment.heroku
 
 To test the API endpoints, import the Postman Collection.
 Login or register, and use Bearer token as auth where necessary.
+
+
+### Further documentation
+
+Model and view documentation can be found in models.py and views.py.
